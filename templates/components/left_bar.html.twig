@@ -1,0 +1,49 @@
+<div class="h-screen bg-gray-800 text-white w-64 fixed top-0 left-0">
+    <div class="p-4">
+        <h2 class="text-xl font-bold">Menu</h2>
+    </div>
+    <nav class="mt-4">
+        <ul class="space-y-2">
+            <li>
+                <a href="{{ path('app_home') }}" class="block py-2 px-4 rounded hover:bg-gray-700">
+                    Accueil
+                </a>
+            </li>
+            <li>
+                <a href="" class="block py-2 px-4 rounded hover:bg-gray-700">
+                    Recettes
+                </a>
+            </li>
+            <li>
+                <a href="" class="block py-2 px-4 rounded hover:bg-gray-700">
+                    Ingrédients
+                </a>
+            </li>
+            {% if app.user %}
+                <li>
+                    <a href="" class="block py-2 px-4 rounded hover:bg-gray-700">
+                        Mon Profil
+                    </a>
+                </li>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li>
+                        <a href="" class="block py-2 px-4 rounded hover:bg-gray-700">
+                            Administration
+                        </a>
+                    </li>
+                {% endif %}
+                <li>
+                    <a href="{{ path('app_logout') }}" class="block py-2 px-4 rounded hover:bg-red-600">
+                        Déconnexion
+                    </a>
+                </li>
+            {% else %}
+                <li>
+                    <a href="{{ path('app_login') }}" class="block py-2 px-4 rounded hover:bg-blue-600">
+                        Connexion
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
