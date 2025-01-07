@@ -25,6 +25,15 @@ class AppFixtures extends Fixture
     {
         $faker = Factory::create('fr_FR');
 
+        $images = [
+            'recipe1.webp',
+            'recipe2.webp',
+            'recipe3.webp',
+            'recipe4.webp',
+            'recipe5.webp',
+            'recipe6.webp',
+        ];
+
         $ingredientNames = [
             'Farine', 'Sucre', 'Beurre', 'Œufs', 'Lait', 
             'Sel', 'Poivre', 'Huile d\'olive', 'Tomates', 'Oignons',
@@ -83,7 +92,8 @@ class AppFixtures extends Fixture
                 ->setDescription($faker->paragraph)
                 ->setPrepTime($faker->numberBetween(5, 60))
                 ->setCookTime($faker->numberBetween(5, 60))
-                ->setAuthor($faker->randomElement($users));
+                ->setAuthor($faker->randomElement($users))
+                ->setImage($faker->randomElement($images));
             foreach ($faker->randomElements($ingredients, mt_rand(3, 6)) as $ingredient) {
                 $recipe->addIngredient($ingredient);
             }

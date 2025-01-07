@@ -6,7 +6,6 @@
 <div class="container mx-auto px-4 py-8">
     <h1 class="text-4xl font-bold text-center text-gray-800 mb-6">Liste des Recettes</h1>
 
-    <!-- Barre de recherche -->
     <form method="get" action="{{ path('recipes_list') }}" class="mb-6 flex justify-center">
         <input 
             type="text" 
@@ -27,7 +26,14 @@
             {% for recipe in recipes %}
                 <li class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
                     <div class="p-4">
-                        <h2 class="text-2xl font-semibold text-gray-800 mb-2">{{ recipe.title }}</h2>
+                        {% if recipe.image %}
+                            <img src="{{ asset('uploads/recipes/' ~ recipe.image) }}" alt="Image de {{ recipe.title }}" class="w-full h-48 object-cover rounded-t-lg">
+                        {% else %}
+                            <div class="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-500 rounded-t-lg">
+                                Aucune image
+                            </div>
+                        {% endif %}
+                        <h2 class="text-2xl font-semibold text-gray-800 mt-2 mb-2">{{ recipe.title }}</h2>
                         <p class="text-gray-600 mb-4">{{ recipe.description|length > 100 ? recipe.description[:100] ~ '...' : recipe.description }}</p>
                         <a href="{{ path('recipe_show', { id: recipe.id }) }}" 
                            class="inline-block bg-blue-500 text-white text-sm font-medium py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors duration-200">
