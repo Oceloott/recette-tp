@@ -5,14 +5,60 @@
 {% block title %}{{ recipe.title }}{% endblock %}
 
 {% block body %}
-<h1>{{ recipe.title }}</h1>
-<p>{{ recipe.description }}</p>
-<p>Ingrédients :</p>
-<ul>
-    {% for ingredient in recipe.ingredients %}
-        <li>{{ ingredient.name }} ({{ ingredient.quantity }})</li>
-    {% endfor %}
-</ul>
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+        {% if recipe.image %}
+            <img src="{{ asset('uploads/recipes/' ~ recipe.image) }}"  class="w-full h-64 object-cover">
+        {% else %}
+            <div class="w-full h-64 bg-gray-200 flex items-center justify-center text-gray-500">
+                Aucune image disponible
+            </div>
+        {% endif %}
 
-<a href="{{ path('app_home') }}">Retour à l'accueil</a>
+        <div class="p-6">
+            <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ recipe.title }}</h1>
+
+            <p class="text-gray-700 text-lg mb-6">{{ recipe.description }}</p>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-2">Ingrédients :</h2>
+            <ul class="list-disc list-inside text-gray-700 mb-6">
+                {% for ingredient in recipe.ingredients %}
+                    <li>
+                        {{ ingredient.name }} :  
+                        {% if ingredient.quantity %}
+                            {{ ingredient.quantity }} {{ ingredient.unit }}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-2">Étapes :</h2>
+            <ol class="list-inside text-gray-700 mb-6">
+                {% for step in recipe.steps %}
+                    <li>{{ step.stepOrder }}. {{ step.description }}</li>
+                {% endfor %}
+            </ol>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-2">Avis :</h2>
+            <ul class="text-gray-700">
+                {% for review in recipe.reviews %}
+                    <li class="mb-4">
+                        <p><strong>Note : </strong>{{ review.rating }}/5</p>
+                        <p>{{ review.comment }}</p>
+                        <p class="text-sm text-gray-500">Par {{ review.user.firstname }} le {{ review.createdAt|date('d/m/Y') }}</p>
+                    </li>
+                {% else %}
+                    <p class="text-gray-500">Aucun avis pour cette recette.</p>
+                {% endfor %}
+            </ul>
+
+            <div class="mt-6">
+                <a href="{{ path('recipes_list') }}" 
+                   class="inline-block bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors duration-200">
+                    Retour à la liste des recettes
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
