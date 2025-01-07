@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recettes{% endblock %}
+
+{% block body %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-4xl font-bold text-center text-gray-800 mb-6">Liste des Recettes</h1>
+
+    <!-- Barre de recherche -->
+    <form method="get" action="{{ path('recipes_list') }}" class="mb-6 flex justify-center">
+        <input 
+            type="text" 
+            name="search" 
+            value="{{ app.request.get('search') }}" 
+            placeholder="Rechercher une recette..."
+            class="border border-gray-300 rounded-l-lg py-2 px-4 w-full max-w-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+        <button 
+            type="submit" 
+            class="bg-blue-500 text-white py-2 px-4 rounded-r-lg hover:bg-blue-600 transition-colors duration-200">
+            Rechercher
+        </button>
+    </form>
+
+    {% if recipes is not empty %}
+        <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for recipe in recipes %}
+                <li class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                    <div class="p-4">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-2">{{ recipe.title }}</h2>
+                        <p class="text-gray-600 mb-4">{{ recipe.description|length > 100 ? recipe.description[:100] ~ '...' : recipe.description }}</p>
+                        <a href="{{ path('recipe_show', { id: recipe.id }) }}" 
+                           class="inline-block bg-blue-500 text-white text-sm font-medium py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors duration-200">
+                            Voir la recette
+                        </a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-center text-gray-500">Aucune recette trouvée.</p>
+    {% endif %}
+</div>
+{% endblock %}

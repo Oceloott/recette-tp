@@ -25,7 +25,6 @@ class AppFixtures extends Fixture
     {
         $faker = Factory::create('fr_FR');
 
-        // Arrays pour les données prédéfinies
         $ingredientNames = [
             'Farine', 'Sucre', 'Beurre', 'Œufs', 'Lait', 
             'Sel', 'Poivre', 'Huile d\'olive', 'Tomates', 'Oignons',
@@ -53,7 +52,6 @@ class AppFixtures extends Fixture
             'Manque un peu de saveur.', 'Une nouvelle recette à tester absolument.'
         ];
 
-        // Création des utilisateurs
         $users = [];
         $roles = ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_BANNED'];
         foreach ($roles as $role) {
@@ -68,7 +66,6 @@ class AppFixtures extends Fixture
             $users[] = $user;
         }
 
-        // Création des ingrédients
         $ingredients = [];
         foreach ($ingredientNames as $name) {
             $ingredient = new Ingredient();
@@ -79,7 +76,6 @@ class AppFixtures extends Fixture
             $ingredients[] = $ingredient;
         }
 
-        // Création des recettes
         $recipes = [];
         foreach ($recipeTitles as $title) {
             $recipe = new Recipe();
@@ -95,7 +91,6 @@ class AppFixtures extends Fixture
             $recipes[] = $recipe;
         }
 
-        // Création des étapes pour chaque recette
         foreach ($recipes as $recipe) {
             $numSteps = mt_rand(3, 5);
             for ($i = 1; $i <= $numSteps; $i++) {
@@ -107,7 +102,6 @@ class AppFixtures extends Fixture
             }
         }
 
-        // Création des avis pour chaque recette
         foreach ($recipes as $recipe) {
             $numReviews = mt_rand(1, 3);
             for ($i = 0; $i < $numReviews; $i++) {

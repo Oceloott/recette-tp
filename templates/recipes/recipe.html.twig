@@ -1,0 +1,18 @@
+{# templates/recipe/show.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ recipe.title }}{% endblock %}
+
+{% block body %}
+<h1>{{ recipe.title }}</h1>
+<p>{{ recipe.description }}</p>
+<p>Ingrédients :</p>
+<ul>
+    {% for ingredient in recipe.ingredients %}
+        <li>{{ ingredient.name }} ({{ ingredient.quantity }})</li>
+    {% endfor %}
+</ul>
+
+<a href="{{ path('app_home') }}">Retour à l'accueil</a>
+{% endblock %}
