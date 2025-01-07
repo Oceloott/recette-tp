@@ -14,8 +14,18 @@ class RecipeController extends AbstractController
     #[Route('/recipe/{id}', name: 'recipe_show')]
     public function show(Recipe $recipe): Response
     {
+
+        $reviews = $recipe->getReviews();
+
+        $averageRating = null;
+        if (count($reviews) > 0) {
+            $total = array_reduce($reviews->toArray(), fn($carry, $review) => $carry + $review->getRating(), 0);
+            $averageRating = $total / count($reviews);
+        }
+
         return $this->render('recipes/recipe.html.twig', [
             'recipe' => $recipe,
+            'averageRating' => $averageRating,
         ]);
     }
 
