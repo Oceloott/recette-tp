@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Recettes{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto">
+        <h1 class="text-3xl font-bold text-center mb-6 text-gray-700">Liste des Recettes</h1>
+
+        <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th class="px-4 py-2 text-left text-gray-600">Id</th>
+                    <th class="px-4 py-2 text-left text-gray-600">Titre</th>
+                    <th class="px-4 py-2 text-left text-gray-600">Description</th>
+                    <th class="px-4 py-2 text-left text-gray-600">Temps Préparation</th>
+                    <th class="px-4 py-2 text-left text-gray-600">Temps Cuisson</th>
+                    <th class="px-4 py-2 text-left text-gray-600">Image</th>
+                    <th class="px-4 py-2 text-center text-gray-600">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for recipe in recipes %}
+                    <tr class="border-b border-gray-200 hover:bg-gray-50">
+                        <td class="px-4 py-2">{{ recipe.id }}</td>
+                        <td class="px-4 py-2">{{ recipe.title }}</td>
+                        <td class="px-4 py-2">{{ recipe.description | slice(0, 50) }}...</td>
+                        <td class="px-4 py-2">{{ recipe.prepTime }} min</td>
+                        <td class="px-4 py-2">{{ recipe.cookTime }} min</td>
+                        <td class="px-4 py-2">
+                            {% if recipe.image %}
+                                <img src="{{ recipe.image }}" alt="Image de {{ recipe.title }}" class="h-12 w-12 rounded-full">
+                            {% else %}
+                                <span class="text-gray-400 italic">Pas d'image</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-4 py-2 text-center">
+                            <a href="{{ path('app_recipes_show', {'id': recipe.id}) }}" class="text-blue-500 hover:underline">Voir</a>
+                            <a href="{{ path('app_recipes_edit', {'id': recipe.id}) }}" class="ml-4 text-yellow-500 hover:underline">Modifier</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7" class="px-4 py-2 text-center text-gray-500">Aucune recette trouvée</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="mt-6 text-center">
+            <a href="{{ path('app_recipes_new') }}" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                Ajouter une nouvelle recette
+            </a>
+        </div>
+    </div>
+{% endblock %}

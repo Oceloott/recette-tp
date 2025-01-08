@@ -11,13 +11,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/step')]
+#[Route('/admin/step')]
 final class StepController extends AbstractController
 {
     #[Route(name: 'app_step_index', methods: ['GET'])]
     public function index(StepRepository $stepRepository): Response
     {
-        return $this->render('step/index.html.twig', [
+        return $this->render('admin/step/index.html.twig', [
             'steps' => $stepRepository->findAll(),
         ]);
     }
@@ -36,7 +36,7 @@ final class StepController extends AbstractController
             return $this->redirectToRoute('app_step_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('step/new.html.twig', [
+        return $this->render('admin/step/new.html.twig', [
             'step' => $step,
             'form' => $form,
         ]);
@@ -45,7 +45,7 @@ final class StepController extends AbstractController
     #[Route('/{id}', name: 'app_step_show', methods: ['GET'])]
     public function show(Step $step): Response
     {
-        return $this->render('step/show.html.twig', [
+        return $this->render('admin/step/show.html.twig', [
             'step' => $step,
         ]);
     }
@@ -62,7 +62,7 @@ final class StepController extends AbstractController
             return $this->redirectToRoute('app_step_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('step/edit.html.twig', [
+        return $this->render('admin/step/edit.html.twig', [
             'step' => $step,
             'form' => $form,
         ]);

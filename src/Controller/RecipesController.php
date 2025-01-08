@@ -11,13 +11,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/recipess')]
+#[Route('/admin/recipes')]
 final class RecipesController extends AbstractController
 {
     #[Route(name: 'app_recipes_index', methods: ['GET'])]
     public function index(RecipeRepository $recipeRepository): Response
     {
-        return $this->render('recipes/index.html.twig', [
+        return $this->render('admin/recipes/index.html.twig', [
             'recipes' => $recipeRepository->findAll(),
         ]);
     }
@@ -36,7 +36,7 @@ final class RecipesController extends AbstractController
             return $this->redirectToRoute('app_recipes_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('recipes/new.html.twig', [
+        return $this->render('admin/recipes/new.html.twig', [
             'recipe' => $recipe,
             'form' => $form,
         ]);
@@ -45,7 +45,7 @@ final class RecipesController extends AbstractController
     #[Route('/{id}', name: 'app_recipes_show', methods: ['GET'])]
     public function show(Recipe $recipe): Response
     {
-        return $this->render('recipes/show.html.twig', [
+        return $this->render('admin/recipes/show.html.twig', [
             'recipe' => $recipe,
         ]);
     }
@@ -62,7 +62,7 @@ final class RecipesController extends AbstractController
             return $this->redirectToRoute('app_recipes_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('recipes/edit.html.twig', [
+        return $this->render('admin/recipes/edit.html.twig', [
             'recipe' => $recipe,
             'form' => $form,
         ]);

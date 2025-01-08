@@ -11,13 +11,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/review')]
+#[Route('/admin/review')]
 final class ReviewController extends AbstractController
 {
     #[Route(name: 'app_review_index', methods: ['GET'])]
     public function index(ReviewRepository $reviewRepository): Response
     {
-        return $this->render('review/index.html.twig', [
+        return $this->render('admin/review/index.html.twig', [
             'reviews' => $reviewRepository->findAll(),
         ]);
     }
@@ -36,7 +36,7 @@ final class ReviewController extends AbstractController
             return $this->redirectToRoute('app_review_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('review/new.html.twig', [
+        return $this->render('admin/review/new.html.twig', [
             'review' => $review,
             'form' => $form,
         ]);
@@ -45,7 +45,7 @@ final class ReviewController extends AbstractController
     #[Route('/{id}', name: 'app_review_show', methods: ['GET'])]
     public function show(Review $review): Response
     {
-        return $this->render('review/show.html.twig', [
+        return $this->render('admin/review/show.html.twig', [
             'review' => $review,
         ]);
     }
@@ -62,7 +62,7 @@ final class ReviewController extends AbstractController
             return $this->redirectToRoute('app_review_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('review/edit.html.twig', [
+        return $this->render('admin/review/edit.html.twig', [
             'review' => $review,
             'form' => $form,
         ]);
