@@ -5,14 +5,12 @@
 {% block body %}
 <div class="flex items-center justify-center min-h-screen bg-gray-100">
     <div class="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
-        <!-- Affichage des erreurs -->
         {% if error %}
             <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
                 {{ error.messageKey|trans(error.messageData, 'security') }}
             </div>
         {% endif %}
 
-        <!-- Message si l'utilisateur est connecté -->
         {% if app.user %}
             <div class="mb-4 text-gray-700">
                 Vous êtes connecté en tant que <strong>{{ app.user.userIdentifier }}</strong>.
@@ -23,7 +21,6 @@
         <h1 class="text-2xl font-bold text-gray-800 text-center mb-6">Connexion</h1>
 
         <form method="post">
-            <!-- Champ Email -->
             <div class="mb-4">
                 <label for="username" class="block text-gray-600 mb-2">Adresse email</label>
                 <input type="email" value="{{ last_username }}" name="_username" id="username"
@@ -31,7 +28,6 @@
                        autocomplete="email" required autofocus>
             </div>
 
-            <!-- Champ Mot de passe -->
             <div class="mb-4">
                 <label for="password" class="block text-gray-600 mb-2">Mot de passe</label>
                 <input type="password" name="_password" id="password"
@@ -39,25 +35,15 @@
                        autocomplete="current-password" required>
             </div>
 
-            <!-- Jeton CSRF -->
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-            <!-- Option "Se souvenir de moi" (commenté par défaut) -->
-            {#
-            <div class="mb-4 flex items-center">
-                <input type="checkbox" name="_remember_me" id="_remember_me" class="mr-2">
-                <label for="_remember_me" class="text-gray-600">Se souvenir de moi</label>
-            </div>
-            #}
 
-            <!-- Bouton de connexion -->
             <button type="submit"
                     class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors duration-200">
                 Connexion
             </button>
         </form>
 
-        <!-- Lien de récupération de mot de passe (optionnel) -->
         <div class="mt-4 text-center">
             <a href="#" class="text-blue-500 hover:underline">Mot de passe oublié ?</a>
         </div>
