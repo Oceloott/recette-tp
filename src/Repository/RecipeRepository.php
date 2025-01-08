@@ -16,6 +16,21 @@ class RecipeRepository extends ServiceEntityRepository
         parent::__construct($registry, Recipe::class);
     }
 
+
+    public function getThreeRandomRecipes(): array
+    {
+        $ids = $this->createQueryBuilder('r')
+            ->select('r.id')
+            ->getQuery()
+            ->getArrayResult();
+    
+        $randomIds = array_column($ids, 'id');
+        shuffle($randomIds);
+        $randomIds = array_slice($randomIds, 0, 3);
+    
+        return $this->findBy(['id' => $randomIds]);
+    }
+    
 //    /**
 //     * @return Recipe[] Returns an array of Recipe objects
 //     */
