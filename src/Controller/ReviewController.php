@@ -30,6 +30,11 @@ final class ReviewController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            if ($review->getCreatedAt() === null) {
+                $review->setCreatedAt(new \DateTimeImmutable());
+            }
+
             $entityManager->persist($review);
             $entityManager->flush();
 
