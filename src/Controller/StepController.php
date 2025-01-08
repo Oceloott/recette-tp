@@ -10,8 +10,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
 
 #[Route('/admin/step')]
+#[IsGranted('ROLE_ADMIN')]
 final class StepController extends AbstractController
 {
     #[Route(name: 'app_step_index', methods: ['GET'])]

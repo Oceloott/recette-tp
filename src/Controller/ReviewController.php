@@ -10,8 +10,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
 
 #[Route('/admin/review')]
+#[IsGranted('ROLE_ADMIN')]
 final class ReviewController extends AbstractController
 {
     #[Route(name: 'app_review_index', methods: ['GET'])]
