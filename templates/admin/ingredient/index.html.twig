@@ -13,6 +13,7 @@
                     <th class="px-4 py-2 text-left text-gray-600">Nom</th>
                     <th class="px-4 py-2 text-left text-gray-600">Quantité</th>
                     <th class="px-4 py-2 text-left text-gray-600">Unité</th>
+                    <th class="px-4 py-2 text-left text-gray-600">Recette ID</th>
                     <th class="px-4 py-2 text-center text-gray-600">Actions</th>
                 </tr>
             </thead>
@@ -23,8 +24,8 @@
                         <td class="px-4 py-2">{{ ingredient.name }}</td>
                         <td class="px-4 py-2">{{ ingredient.quantity }}</td>
                         <td class="px-4 py-2">{{ ingredient.unit }}</td>
+                        <td class="px-4 py-2">{{ ingredient.recipe.id }}</td>
                         <td class="px-4 py-2 text-center">
-                            <a href="{{ path('app_ingredient_show', {'id': ingredient.id}) }}" class="text-blue-500 hover:underline">Voir</a>
                             <a href="{{ path('app_ingredient_edit', {'id': ingredient.id}) }}" class="ml-4 text-yellow-500 hover:underline">Modifier</a>
                         </td>
                     </tr>

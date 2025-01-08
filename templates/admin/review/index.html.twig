@@ -13,6 +13,8 @@
                     <th class="px-4 py-2 text-left text-gray-600">Note</th>
                     <th class="px-4 py-2 text-left text-gray-600">Commentaire</th>
                     <th class="px-4 py-2 text-left text-gray-600">Date de Création</th>
+                    <th class="px-4 py-2 text-left text-gray-600">Utilisateur ID</th>
+                    <th class="px-4 py-2 text-left text-gray-600">Recette ID</th>
                     <th class="px-4 py-2 text-center text-gray-600">Actions</th>
                 </tr>
             </thead>
@@ -25,8 +27,10 @@
                         <td class="px-4 py-2">
                             {{ review.createdAt ? review.createdAt|date('d/m/Y H:i') : 'Non défini' }}
                         </td>
+                        <td class="px-4 py-2">{{ review.user.id }}</td>
+                        <td class="px-4 py-2">{{ review.recipe.id }}</td>
+
                         <td class="px-4 py-2 text-center">
-                            <a href="{{ path('app_review_show', {'id': review.id}) }}" class="text-blue-500 hover:underline">Voir</a>
                             <a href="{{ path('app_review_edit', {'id': review.id}) }}" class="ml-4 text-yellow-500 hover:underline">Modifier</a>
                         </td>
                     </tr>

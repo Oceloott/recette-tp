@@ -37,13 +37,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Recipe>
      */
-    #[ORM\OneToMany(targetEntity: Recipe::class, mappedBy: 'author')]
+    #[ORM\OneToMany(targetEntity: Recipe::class, mappedBy: 'author',orphanRemoval: true, cascade: ['remove'])]
     private Collection $recipes;
 
     /**
      * @var Collection<int, Review>
      */
-    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'user')]
+    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'user', orphanRemoval: true, cascade: ['remove'])]
     private Collection $reviews;
 
     public function __construct()

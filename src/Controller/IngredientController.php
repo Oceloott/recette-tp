@@ -42,14 +42,6 @@ final class IngredientController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_ingredient_show', methods: ['GET'])]
-    public function show(Ingredient $ingredient): Response
-    {
-        return $this->render('admin/ingredient/show.html.twig', [
-            'ingredient' => $ingredient,
-        ]);
-    }
-
     #[Route('/{id}/edit', name: 'app_ingredient_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Ingredient $ingredient, EntityManagerInterface $entityManager): Response
     {

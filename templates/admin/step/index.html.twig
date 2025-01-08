@@ -12,6 +12,7 @@
                     <th class="px-4 py-2 text-left text-gray-600">Id</th>
                     <th class="px-4 py-2 text-left text-gray-600">Description</th>
                     <th class="px-4 py-2 text-left text-gray-600">Ordre</th>
+                    <th class="px-4 py-2 text-left text-gray-600">Recette ID</th>
                     <th class="px-4 py-2 text-center text-gray-600">Actions</th>
                 </tr>
             </thead>
@@ -21,8 +22,8 @@
                         <td class="px-4 py-2">{{ step.id }}</td>
                         <td class="px-4 py-2">{{ step.description | slice(0, 100) }}{% if step.description|length > 100 %}...{% endif %}</td>
                         <td class="px-4 py-2">{{ step.stepOrder }}</td>
+                        <td class="px-4 py-2">{{ step.recipe.id }}</td>
                         <td class="px-4 py-2 text-center">
-                            <a href="{{ path('app_step_show', {'id': step.id}) }}" class="text-blue-500 hover:underline">Voir</a>
                             <a href="{{ path('app_step_edit', {'id': step.id}) }}" class="ml-4 text-yellow-500 hover:underline">Modifier</a>
                         </td>
                     </tr>

@@ -42,13 +42,6 @@ final class RecipesController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_recipes_show', methods: ['GET'])]
-    public function show(Recipe $recipe): Response
-    {
-        return $this->render('admin/recipes/show.html.twig', [
-            'recipe' => $recipe,
-        ]);
-    }
 
     #[Route('/{id}/edit', name: 'app_recipes_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Recipe $recipe, EntityManagerInterface $entityManager): Response

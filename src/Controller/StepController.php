@@ -42,14 +42,6 @@ final class StepController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_step_show', methods: ['GET'])]
-    public function show(Step $step): Response
-    {
-        return $this->render('admin/step/show.html.twig', [
-            'step' => $step,
-        ]);
-    }
-
     #[Route('/{id}/edit', name: 'app_step_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Step $step, EntityManagerInterface $entityManager): Response
     {
