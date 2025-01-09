@@ -8,10 +8,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\RecipeRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+
 
 class RecipeController extends AbstractController
 {
     #[Route('/recipe/{id}', name: 'recipe_show')]
+    #[IsGranted('ROLE_USER')]
     public function show(Recipe $recipe): Response
     {
 
