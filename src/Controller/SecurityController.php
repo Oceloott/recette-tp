@@ -120,8 +120,6 @@ public function resetPassword(
 ): Response {
     $user = $userRepository->findOneByResetToken($token);
 
-
-
     $form = $this->createForm(ResetPasswordRequestFormType::class);
     $form->handleRequest($request);
 
