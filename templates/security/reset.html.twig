@@ -1,4 +1,31 @@
-{{ form_start(passForm) }}
-{{ form_row(passForm.password) }}
-<button type="submit">Réinitialiser le mot de passe</button>
-{{ form_end(passForm) }}
+{% extends 'base.html.twig' %}
+
+{% block title %}Réinitialiser le mot de passe{% endblock %}
+
+{% block body %}
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
+        <h1 class="text-2xl font-bold text-gray-800 text-center mb-6">Réinitialiser le mot de passe</h1>
+
+
+        {{ form_start(passForm, {'attr': {'class': 'space-y-4'}}) }}
+
+        <div class="mb-4">
+            {{ form_label(passForm.password, 'Nouveau mot de passe', {'label_attr': {'class': 'block text-gray-600 mb-2'}}) }}
+            {{ form_widget(passForm.password, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'}}) }}
+            {{ form_errors(passForm.password, {'attr': {'class': 'text-red-600 text-sm'}}) }}
+        </div>
+
+        <button type="submit"
+                class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors duration-200">
+            Réinitialiser le mot de passe
+        </button>
+
+        {{ form_end(passForm) }}
+
+        <div class="mt-4 text-center">
+            <a href="{{ path('app_login') }}" class="text-blue-500 hover:underline">Retour à la connexion</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

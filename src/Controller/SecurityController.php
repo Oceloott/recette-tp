@@ -95,7 +95,7 @@ public function forgot(
 
     $emailMessage = (new Email())
         ->from('onboarding@resend.dev')
-        ->to('baba06012000@gmail.com')
+        ->to($user->getEmail())
         ->subject('Réinitialisation de votre mot de passe')
         ->html(sprintf(
             '<p>Bonjour %s,</p>
@@ -106,7 +106,6 @@ public function forgot(
         ));
     $mailer->send($emailMessage);
 
-    $this->addFlash('success', 'Email envoyé avec succès !');
     return $this->redirectToRoute('app_login');
 }
 
@@ -141,24 +140,5 @@ public function resetPassword(
     return $this->render('security/reset.html.twig', [
         'passForm' => $form->createView(),
     ]);
-}
-#[Route('/test-email', name: 'test_email')]
-public function sendTestEmail(MailerInterface $mailer): Response
-{
-    try {
-        $email = (new Email())
-            ->from('onboarding@resend.dev')
-            ->to('baba06012000@gmail.com') // Remplacez par une adresse email valide
-            ->subject('Test Email via Resend')
-            ->html('<p>This is a test email sent using Resend and Symfony Mailer.</p>');
-
-        $mailer->send($email);
-
-        return new Response('Email sent successfully!');
-    } catch (\Exception $e) {
-        return new Response('Error: ' . $e->getMessage());
-    }
-}
-
-    
+}    
 }
