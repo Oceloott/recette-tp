@@ -9,6 +9,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\RecipeRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Form\AddRecipeType;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
+
+
+
 
 
 class RecipeController extends AbstractController
@@ -33,6 +39,7 @@ class RecipeController extends AbstractController
     }
 
     #[Route('/recipes', name: 'recipes_list')]
+    #[IsGranted('ROLE_USER')]
     public function index(RecipeRepository $recipeRepository, Request $request): Response
     {
         $search = $request->query->get('search', '');
@@ -49,6 +56,39 @@ class RecipeController extends AbstractController
     
         return $this->render('recipes/recipes_list.html.twig', [
             'recipes' => $recipes,
+        ]);
+    }
+    #[Route('/add/recipe', name: 'add_recipe')]
+    #[IsGranted('ROLE_USER')]
+    public function addRecipe(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        Security $security
+    ): Response {
+        $recipe = new Recipe();
+
+        $user = $security->getUser();
+
+        if (!$user) {
+            $this->addFlash('error', 'You must be logged in to add a recipe.');
+            return $this->redirectToRoute('app_login');
+        }
+
+        $recipe->setAuthor($user);
+
+        $form = $this->createForm(AddRecipeType::class, $recipe);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($recipe);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Recipe successfully added!');
+            return $this->redirectToRoute('recipes_list');
+        }
+
+        return $this->render('recipes/add.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 }

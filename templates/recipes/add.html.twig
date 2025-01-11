@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add Recipe{% endblock %}
+
+{% block body %}
+<div class="max-w-4xl mx-auto mt-10 p-8 bg-gray-50 rounded-lg shadow-lg">
+    <h1 class="text-4xl font-bold text-gray-800 mb-8">Ajouter une recette</h1>
+
+    {{ form_start(form, { attr: { class: 'space-y-8' } }) }}
+
+    <div>
+        <h2 class="text-2xl font-semibold text-gray-700 mb-4">Information recette</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                {{ form_label(form.title, null, { label_attr: { class: 'block text-lg font-medium text-gray-800' } }) }}
+                {{ form_widget(form.title, { attr: { class: 'mt-2 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base p-2' } }) }}
+            </div>
+            <div>
+                {{ form_label(form.description, null, { label_attr: { class: 'block text-lg font-medium text-gray-800' } }) }}
+                {{ form_widget(form.description, { attr: { class: 'mt-2 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base p-2' } }) }}
+            </div>
+            <div>
+                {{ form_label(form.prepTime, null, { label_attr: { class: 'block text-lg font-medium text-gray-800' } }) }}
+                {{ form_widget(form.prepTime, { attr: { class: 'mt-2 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base p-2' } }) }}
+            </div>
+            <div>
+                {{ form_label(form.cookTime, null, { label_attr: { class: 'block text-lg font-medium text-gray-800' } }) }}
+                {{ form_widget(form.cookTime, { attr: { class: 'mt-2 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base p-2' } }) }}
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <h2 class="text-2xl font-semibold text-gray-700 mb-4">Ingredients</h2>
+        <div id="ingredients-wrapper" data-prototype="{{ form_widget(form.ingredients.vars.prototype)|e }}" class="space-y-4">
+            {% for ingredient in form.ingredients %}
+                <div class="flex items-center bg-white p-4 rounded-lg shadow-md">
+                    <div class="flex-1">
+                        {{ form_widget(ingredient, { attr: { class: 'block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base p-2' } }) }}
+                    </div>
+                    <button type="button" class="ml-4 text-red-500 hover:text-red-700 font-medium">Supprimer</button>
+                </div>
+            {% endfor %}
+        </div>
+        <button type="button" id="add-ingredient" class="mt-4 bg-indigo-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-indigo-600">
+            Ajouter ingredient
+        </button>
+    </div>
+
+    <div>
+        <h2 class="text-2xl font-semibold text-gray-700 mb-4">Steps</h2>
+        <div id="steps-wrapper" data-prototype="{{ form_widget(form.steps.vars.prototype)|e }}" class="space-y-4">
+            {% for step in form.steps %}
+                <div class="flex items-center bg-white p-4 rounded-lg shadow-md">
+                    <div class="flex-1">
+                        {{ form_widget(step, { attr: { class: 'block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-base p-2' } }) }}
+                    </div>
+                    <button type="button" class="ml-4 text-red-500 hover:text-red-700 font-medium">Supprimer</button>
+                </div>
+            {% endfor %}
+        </div>
+        <button type="button" id="add-step" class="mt-4 bg-indigo-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-indigo-600">
+            Ajouter etape
+        </button>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="mt-8">
+        <button type="submit" class="w-full bg-green-500 text-white py-3 px-6 rounded-lg shadow-md hover:bg-green-600 text-lg font-bold">
+            Sauvegarder recette
+        </button>
+    </div>
+
+    {{ form_end(form) }}
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const ingredientsWrapper = document.querySelector('#ingredients-wrapper');
+        const addIngredientButton = document.querySelector('#add-ingredient');
+
+        addIngredientButton.addEventListener('click', () => {
+            const prototype = ingredientsWrapper.dataset.prototype;
+            const index = ingredientsWrapper.children.length;
+            const newForm = prototype.replace(/__name__/g, index);
+            const div = document.createElement('div');
+            div.classList.add('flex', 'items-center', 'bg-white', 'p-4', 'rounded-lg', 'shadow-md');
+            div.innerHTML = newForm + '<button type="button" class="ml-4 text-red-500 hover:text-red-700 font-medium">Remove</button>';
+            ingredientsWrapper.appendChild(div);
+        });
+
+        ingredientsWrapper.addEventListener('click', (event) => {
+            if (event.target.classList.contains('text-red-500')) {
+                event.target.parentElement.remove();
+            }
+        });
+
+        const stepsWrapper = document.querySelector('#steps-wrapper');
+        const addStepButton = document.querySelector('#add-step');
+
+        addStepButton.addEventListener('click', () => {
+            const prototype = stepsWrapper.dataset.prototype;
+            const index = stepsWrapper.children.length;
+            const newForm = prototype.replace(/__name__/g, index);
+            const div = document.createElement('div');
+            div.classList.add('flex', 'items-center', 'bg-white', 'p-4', 'rounded-lg', 'shadow-md');
+            div.innerHTML = newForm + '<button type="button" class="ml-4 text-red-500 hover:text-red-700 font-medium">Remove</button>';
+            stepsWrapper.appendChild(div);
+        });
+
+        stepsWrapper.addEventListener('click', (event) => {
+            if (event.target.classList.contains('text-red-500')) {
+                event.target.parentElement.remove();
+            }
+        });
+    });
+</script>
+{% endblock %}
