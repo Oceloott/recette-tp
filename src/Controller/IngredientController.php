@@ -17,6 +17,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class IngredientController extends AbstractController
 {
     #[Route(name: 'app_ingredient_index', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(IngredientRepository $ingredientRepository): Response
     {
         return $this->render('admin/ingredient/index.html.twig', [
@@ -25,6 +26,7 @@ final class IngredientController extends AbstractController
     }
 
     #[Route('/new', name: 'app_ingredient_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $ingredient = new Ingredient();
@@ -45,6 +47,7 @@ final class IngredientController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_ingredient_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, Ingredient $ingredient, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(IngredientType::class, $ingredient);
@@ -63,6 +66,7 @@ final class IngredientController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_ingredient_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, Ingredient $ingredient, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$ingredient->getId(), $request->getPayload()->getString('_token'))) {

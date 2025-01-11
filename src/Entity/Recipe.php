@@ -145,7 +145,6 @@ class Recipe
     public function removeIngredient(Ingredient $ingredient): static
     {
         if ($this->ingredients->removeElement($ingredient)) {
-            // set the owning side to null (unless already changed)
             if ($ingredient->getRecipe() === $this) {
                 $ingredient->setRecipe(null);
             }
@@ -175,7 +174,6 @@ class Recipe
     public function removeStep(Step $step): static
     {
         if ($this->steps->removeElement($step)) {
-            // set the owning side to null (unless already changed)
             if ($step->getRecipe() === $this) {
                 $step->setRecipe(null);
             }
@@ -205,7 +203,6 @@ class Recipe
     public function removeReview(Review $review): static
     {
         if ($this->reviews->removeElement($review)) {
-            // set the owning side to null (unless already changed)
             if ($review->getRecipe() === $this) {
                 $review->setRecipe(null);
             }

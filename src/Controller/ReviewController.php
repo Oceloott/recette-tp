@@ -17,6 +17,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class ReviewController extends AbstractController
 {
     #[Route(name: 'app_review_index', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(ReviewRepository $reviewRepository): Response
     {
         return $this->render('admin/review/index.html.twig', [
@@ -25,6 +26,7 @@ final class ReviewController extends AbstractController
     }
 
     #[Route('/new', name: 'app_review_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $review = new Review();
@@ -52,6 +54,7 @@ final class ReviewController extends AbstractController
 
 
     #[Route('/{id}/edit', name: 'app_review_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, Review $review, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ReviewType::class, $review);
@@ -70,6 +73,7 @@ final class ReviewController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_review_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, Review $review, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$review->getId(), $request->getPayload()->getString('_token'))) {

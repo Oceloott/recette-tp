@@ -17,6 +17,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class StepController extends AbstractController
 {
     #[Route(name: 'app_step_index', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(StepRepository $stepRepository): Response
     {
         return $this->render('admin/step/index.html.twig', [
@@ -25,6 +26,7 @@ final class StepController extends AbstractController
     }
 
     #[Route('/new', name: 'app_step_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $step = new Step();
@@ -45,6 +47,7 @@ final class StepController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_step_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, Step $step, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(StepType::class, $step);
@@ -63,6 +66,7 @@ final class StepController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_step_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, Step $step, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$step->getId(), $request->getPayload()->getString('_token'))) {
