@@ -75,6 +75,17 @@ class AppFixtures extends Fixture
             $users[] = $user;
         }
 
+
+        $user2 = new User();
+        $user2->setEmail('codeingniter@gmail.com')
+            ->setFirstname('codeingniter')
+            ->setLastname('codeingniter')
+            ->setRoles(['ROLE_ADMIN'])
+            ->setPassword($this->passwordHasher->hashPassword($user, 'password'))
+            ->setCreatedAt(new \DateTimeImmutable());
+            $manager->persist($user2);
+
+
         $ingredients = [];
         foreach ($ingredientNames as $name) {
             $ingredient = new Ingredient();
