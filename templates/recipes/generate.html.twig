@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>Générer une recette avec l'IA</h2>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST" action="{{ path('generate_recipe') }}">
+        <label for="ingredients">Entrez vos ingrédients (séparés par des virgules) :</label>
+        <input type="text" name="ingredients" id="ingredients" required>
+        <button type="submit">Générer</button>
+    </form>
+
+    {% if recipe %}
+        <h3>Recette générée :</h3>
+        <pre>{{ recipe }}</pre>
+
+        {% if is_granted('ROLE_USER') %}
+            <p>La recette a été sauvegardée dans votre compte.</p>
+        {% endif %}
+    {% endif %}
+{% endblock %}
