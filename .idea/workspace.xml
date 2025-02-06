@@ -5,12 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="659165ac-c7d0-4221-ba2d-723981219078" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/recipes/generate.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/RecipeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/RecipeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Recipe.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Recipe.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/components/left_bar.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/components/left_bar.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/recipes/generate.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/recipes/generate.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +35,7 @@
     &quot;accountId&quot;: &quot;9e7641cd-68ef-4900-8a54-f3892999b3ca&quot;
   }
 }</component>
-  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="C:\wamp64\bin\php\php8.2.18\php.exe">
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="C:\wamp64\bin\php\php8.3.6\php.exe">
     <include_path>
       <path value="$PROJECT_DIR$/vendor/doctrine/inflector" />
       <path value="$PROJECT_DIR$/vendor/doctrine/sql-formatter" />
@@ -234,7 +233,8 @@
       <option name="presentableId" value="Default" />
       <updated>1738571362996</updated>
       <workItem from="1738571364299" duration="667000" />
-      <workItem from="1738572045422" duration="9347000" />
+      <workItem from="1738572045422" duration="10460000" />
+      <workItem from="1738829740158" duration="9318000" />
     </task>
     <servers />
   </component>

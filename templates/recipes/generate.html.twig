@@ -1,24 +1,43 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h2>Générer une recette avec l'IA</h2>
+    <div class="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-xl mt-10">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Générer une recette avec l'IA</h2>
 
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
-
-    <form method="POST" action="{{ path('generate_recipe') }}">
-        <label for="ingredients">Entrez vos ingrédients (séparés par des virgules) :</label>
-        <input type="text" name="ingredients" id="ingredients" required>
-        <button type="submit">Générer</button>
-    </form>
-
-    {% if recipe %}
-        <h3>Recette générée :</h3>
-        <pre>{{ recipe }}</pre>
-
-        {% if is_granted('ROLE_USER') %}
-            <p>La recette a été sauvegardée dans votre compte.</p>
+        {% if error %}
+            <p class="text-red-500 font-medium">{{ error }}</p>
         {% endif %}
-    {% endif %}
+
+        <form method="POST" action="{{ path('generate_recipe') }}" class="bg-gray-100 p-4 rounded-lg shadow-md">
+            <label for="ingredients" class="block text-lg font-medium text-gray-700 mb-2">
+                Entrez vos ingrédients (séparés par des virgules) :
+            </label>
+            <input type="text" name="ingredients" id="ingredients" required
+                   class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            <button type="submit"
+                    class="w-full mt-4 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all">
+                Générer
+            </button>
+        </form>
+
+        {% if recipe %}
+            <div class="mt-8 p-6 bg-white rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold text-gray-900">Recette générée :</h3>
+
+                <div class="bg-gray-100 p-4 mt-2 rounded-lg">
+                    <p class="text-gray-800 font-medium"><strong>Nom :</strong> {{ recipe.title }}</p>
+                    <p class="text-gray-700"><strong>Description :</strong> {{ recipe.description }}</p>
+
+                    <a href="{{ path('recipe_show', { id: recipe.id }) }}"
+                       class="mt-5 inline-block bg-blue-500 text-white text-sm font-medium py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors duration-200">
+                        Voir la recette
+                    </a>
+                </div>
+            </div>
+
+            {% if is_granted('ROLE_USER') %}
+                <p class="text-green-600 font-medium mt-4">✅ La recette a été sauvegardée dans votre compte.</p>
+            {% endif %}
+        {% endif %}
+    </div>
 {% endblock %}
