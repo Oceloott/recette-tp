@@ -17,7 +17,9 @@ class AddRecipeStepType extends AbstractType
                 'label' => 'Description'
             ])
             ->add('stepOrder', IntegerType::class, [
-                'label' => 'Ordre'
+                'label' => 'Ordre',
+                'attr' => ['min' => 0],
+
             ]);
     }
 

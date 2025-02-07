@@ -18,7 +18,9 @@ class AddRecipeIngredientType extends AbstractType
                 'label' => 'Ingredient'
             ])
             ->add('quantity', IntegerType::class, [
-                'label' => 'Quantité'
+                'label' => 'Quantité',
+                'attr' => ['min' => 0],
+
             ])
             ->add('unit', TextType::class, [
                 'label' => 'Unité'

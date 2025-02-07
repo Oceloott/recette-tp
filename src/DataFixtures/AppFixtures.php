@@ -26,18 +26,19 @@ class AppFixtures extends Fixture
         $faker = Factory::create('fr_FR');
 
         $images = [
-            'recipe1.webp',
-            'recipe2.webp',
-            'recipe3.webp',
-            'recipe4.webp',
-            'recipe5.webp',
-            'recipe6.webp',
+            'recipe1.webp', 'recipe2.webp', 'recipe3.webp',
+            'recipe4.webp', 'recipe5.webp', 'recipe6.webp',
         ];
 
         $ingredientNames = [
-            'Farine', 'Sucre', 'Beurre', 'Œufs', 'Lait', 
-            'Sel', 'Poivre', 'Huile d\'olive', 'Tomates', 'Oignons',
-            'Ail', 'Pâtes', 'Poulet', 'Crème fraîche', 'Fromage'
+            'Farine', 'Sucre', 'Beurre', 'Œufs', 'Lait', 'Sel', 'Poivre',
+            'Huile d\'olive', 'Huile de tournesol', 'Huile de coco', 'Levure chimique',
+            'Levure boulangère', 'Bicarbonate de soude', 'Miel', 'Sirop d\'érable',
+            'Vinaigre balsamique', 'Vinaigre de cidre', 'Fécule de maïs', 'Chapelure',
+            'Lait d\'amande', 'Lait de coco', 'Lait de soja', 'Crème fraîche', 'Yaourt nature',
+            'Poulet', 'Dinde', 'Bœuf', 'Poisson', 'Saumon', 'Thon', 'Pommes de terre', 'Carottes',
+            'Tomates', 'Courgettes', 'Champignons', 'Poivrons', 'Oignons', 'Ail', 'Pâtes', 'Riz',
+            'Haricots verts', 'Lentilles', 'Pois chiches', 'Épinards', 'Fromage', 'Jambon'
         ];
 
         $recipeTitles = [
@@ -56,7 +57,7 @@ class AppFixtures extends Fixture
 
         $reviewComments = [
             'Délicieux et facile à préparer !', 'Un peu trop salé à mon goût.',
-            'Excellente recette, mes invités ont adoré.', 
+            'Excellente recette, mes invités ont adoré.',
             'Temps de cuisson un peu long.', 'Simple mais efficace !',
             'Manque un peu de saveur.', 'Une nouvelle recette à tester absolument.'
         ];
@@ -71,30 +72,20 @@ class AppFixtures extends Fixture
                 ->setRoles([$role])
                 ->setPassword($this->passwordHasher->hashPassword($user, 'password'))
                 ->setCreatedAt(new \DateTimeImmutable());
+
             $manager->persist($user);
             $users[] = $user;
         }
 
-
-        $user2 = new User();
-        $user2->setEmail('codeingniter@gmail.com')
+        $adminUser = new User();
+        $adminUser->setEmail('codeingniter@gmail.com')
             ->setFirstname('codeingniter')
             ->setLastname('codeingniter')
             ->setRoles(['ROLE_ADMIN'])
-            ->setPassword($this->passwordHasher->hashPassword($user, 'password'))
+            ->setPassword($this->passwordHasher->hashPassword($adminUser, 'password'))
             ->setCreatedAt(new \DateTimeImmutable());
-            $manager->persist($user2);
-
-
-        $ingredients = [];
-        foreach ($ingredientNames as $name) {
-            $ingredient = new Ingredient();
-            $ingredient->setName($name)
-                ->setQuantity($faker->randomFloat(2, 1, 100))
-                ->setUnit($faker->randomElement(['g', 'ml', 'pieces']));
-            $manager->persist($ingredient);
-            $ingredients[] = $ingredient;
-        }
+        $manager->persist($adminUser);
+        $users[] = $adminUser;
 
         $recipes = [];
         foreach ($recipeTitles as $title) {
@@ -105,9 +96,27 @@ class AppFixtures extends Fixture
                 ->setCookTime($faker->numberBetween(5, 60))
                 ->setAuthor($faker->randomElement($users))
                 ->setImage($faker->randomElement($images));
-            foreach ($faker->randomElements($ingredients, mt_rand(3, 6)) as $ingredient) {
+
+            $usedIngredientNames = [];
+            $numIngredients = mt_rand(3, 6);
+
+            for ($i = 0; $i < $numIngredients; $i++) {
+                do {
+                    $ingredientName = $faker->randomElement($ingredientNames);
+                } while (in_array($ingredientName, $usedIngredientNames));
+
+                $usedIngredientNames[] = $ingredientName;
+
+                $ingredient = new Ingredient();
+                $ingredient->setName($ingredientName)
+                    ->setQuantity($faker->numberBetween(50, 500))
+                    ->setUnit($faker->randomElement(['g', 'ml', 'pièce']))
+                    ->setRecipe($recipe);
+
+                $manager->persist($ingredient);
                 $recipe->addIngredient($ingredient);
             }
+
             $manager->persist($recipe);
             $recipes[] = $recipe;
         }
@@ -119,6 +128,7 @@ class AppFixtures extends Fixture
                 $step->setStepOrder($i)
                     ->setDescription($faker->randomElement($stepDescriptions))
                     ->setRecipe($recipe);
+
                 $manager->persist($step);
             }
         }
@@ -132,12 +142,11 @@ class AppFixtures extends Fixture
                     ->setRecipe($recipe)
                     ->setUser($faker->randomElement($users))
                     ->setCreatedAt(new \DateTimeImmutable());
-                    $manager->persist($review);
+
+                $manager->persist($review);
             }
         }
 
         $manager->flush();
     }
 }
-
-    
