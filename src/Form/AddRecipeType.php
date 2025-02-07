@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Recipe;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -21,11 +22,13 @@ class AddRecipeType extends AbstractType
             ->add('description', TextType::class, [
                 'label' => 'Description'
             ])
-            ->add('prepTime', TextType::class, [
-                'label' => 'Temps de préparation (minutes)'
+            ->add('prepTime', IntegerType::class, [
+                'label' => 'Temps de préparation (minutes)',
+                'attr' => ['min' => 0],
             ])
-            ->add('cookTime', TextType::class, [
-                'label' => 'Temps de cuisson (minutes)'
+            ->add('cookTime', IntegerType::class, [
+                'label' => 'Temps de cuisson (minutes)',
+                'attr' => ['min' => 0],
             ])
             ->add('ingredients', CollectionType::class, [
                 'entry_type' => AddRecipeIngredientType::class,
