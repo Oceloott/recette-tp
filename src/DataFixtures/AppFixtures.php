@@ -35,7 +35,7 @@ class AppFixtures extends Fixture
         ];
 
         $ingredientNames = [
-            'Farine', 'Sucre', 'Beurre', 'Œufs', 'Lait', 
+            'Farine', 'Sucre', 'Beurre', 'Œufs', 'Lait',
             'Sel', 'Poivre', 'Huile d\'olive', 'Tomates', 'Oignons',
             'Ail', 'Pâtes', 'Poulet', 'Crème fraîche', 'Fromage'
         ];
@@ -56,7 +56,7 @@ class AppFixtures extends Fixture
 
         $reviewComments = [
             'Délicieux et facile à préparer !', 'Un peu trop salé à mon goût.',
-            'Excellente recette, mes invités ont adoré.', 
+            'Excellente recette, mes invités ont adoré.',
             'Temps de cuisson un peu long.', 'Simple mais efficace !',
             'Manque un peu de saveur.', 'Une nouvelle recette à tester absolument.'
         ];
@@ -83,7 +83,7 @@ class AppFixtures extends Fixture
             ->setRoles(['ROLE_ADMIN'])
             ->setPassword($this->passwordHasher->hashPassword($user, 'password'))
             ->setCreatedAt(new \DateTimeImmutable());
-            $manager->persist($user2);
+        $manager->persist($user2);
 
 
         $ingredients = [];
@@ -105,22 +105,12 @@ class AppFixtures extends Fixture
                 ->setCookTime($faker->numberBetween(5, 60))
                 ->setAuthor($faker->randomElement($users))
                 ->setImage($faker->randomElement($images));
-
+            foreach ($faker->randomElements($ingredients, mt_rand(3, 6)) as $ingredient) {
+                $recipe->addIngredient($ingredient);
+            }
             $manager->persist($recipe);
             $recipes[] = $recipe;
         }
-
-        $manager->flush();
-
-        foreach ($recipes as $recipe) {
-            $selectedIngredients = $faker->randomElements($ingredients, mt_rand(3, 6));
-            foreach ($selectedIngredients as $ingredient) {
-                $recipe->addIngredient($ingredient);
-                $ingredient->setRecipe($recipe);
-                $manager->persist($ingredient);
-            }
-        }
-
 
         foreach ($recipes as $recipe) {
             $numSteps = mt_rand(3, 5);
@@ -142,7 +132,7 @@ class AppFixtures extends Fixture
                     ->setRecipe($recipe)
                     ->setUser($faker->randomElement($users))
                     ->setCreatedAt(new \DateTimeImmutable());
-                    $manager->persist($review);
+                $manager->persist($review);
             }
         }
 
