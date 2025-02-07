@@ -50,8 +50,13 @@ class RecipeController extends AbstractController
                 $response = $client->chat()->create([
                     'model' => 'gpt-4-turbo',
                     'messages' => [
-                        ['role' => 'system', 'content' => "Tu es un expert en nutrition et en diététique. 
-                        Lorsqu'on te donne une liste d'ingrédients d'une recette, tu dois analyser son apport nutritionnel.
+                        ['role' => 'system', 'content' => "Tu es un expert en nutrition et en diététique. Lorsqu’on te fournit une liste d’ingrédients pour une recette, ainsi que les quantités associées, ta mission consiste à :
+                        Analyser l’apport nutritionnel global de la recette (macronutriments, micronutriments, densité calorique, allergènes éventuels) en te basant précisément sur les ingrédients et leurs quantités.
+                        Calculer et indiquer clairement les principaux macronutriments (protéines, glucides, lipides) ainsi que leurs proportions pour chaque ingrédient et pour la recette globale.
+                        Identifier les points forts et les éventuels déséquilibres nutritionnels de la recette.
+                        Fournir des conseils et des recommandations pour adapter, équilibrer ou optimiser la recette, en tenant compte de différents besoins ou régimes alimentaires (végétarien, sans gluten, pauvre en sucre, etc.).
+                        Ton objectif est de présenter ces informations de manière claire et pédagogique, afin que chacun puisse comprendre l’impact de chaque ingrédient et faire des choix éclairés.
+                        
                         Fournis une analyse détaillée en JSON avec :
                         - **calories** par portion
                         - **protéines** (g)
@@ -63,6 +68,7 @@ class RecipeController extends AbstractController
                         Réponds uniquement en JSON strictement formaté, sans texte explicatif autour."
                         ],
                         ['role' => 'user', 'content' => "Analyse les valeurs nutritionnelles de cette recette contenant : $ingredientsList.
+                        
                         Retourne uniquement un JSON formaté comme ceci :
                         ```json
                         {
@@ -73,7 +79,9 @@ class RecipeController extends AbstractController
                             \"fibres\": 5,
                             \"conseil\": \"Cette recette est riche en glucides et idéale pour un repas énergétique.\"
                         }
-                        ```"
+                        ```
+                        Réponds uniquement en JSON strictement formaté sans texte supplémentaire."
+
                         ],
                     ],
                     'max_tokens' => 300,
@@ -185,8 +193,12 @@ class RecipeController extends AbstractController
                         'messages' => [
                             [
                                 'role' => 'system',
-                                'content' => "Tu es un chef cuisinier passionné qui aide les amateurs à découvrir la cuisine. 
-                                    Tes recettes sont simples, savoureuses et accessibles à tous. 
+                                'content' => "Tu es un chef cuisinier passionné, déterminé à 
+                                transmettre ta passion de la cuisine aux amateurs qui souhaitent s’initier ou progresser. 
+                                Tes recettes sont simples, savoureuses et accessibles à tous, afin de donner à chacun l’envie et le plaisir de cuisiner au quotidien. 
+                                Ton objectif est de partager ton savoir-faire et tes astuces pour que les apprentis cuisiniers puissent,
+                                 à leur tour, régaler leurs proches et s’épanouir dans l’art culinaire.
+                                    Explique chaque étape de préparation de façon claire et détaillée, afin que même un débutant puisse s’y retrouver et prendre plaisir à cuisiner.
                                     
                                     Génére uniquement un JSON strictement formaté avec :
                                     
@@ -207,6 +219,8 @@ class RecipeController extends AbstractController
                             [
                                 'role' => 'user',
                                 'content' => "Voici les ingrédients disponibles : **$ingredients**. 
+                                    
+                                    Tu ne dois utiliser que ces ingrédients pour élaborer ta recette. 
                                     
                                     Génére une recette en JSON formaté :
                                     
