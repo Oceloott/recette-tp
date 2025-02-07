@@ -57,6 +57,29 @@
                     <p class="text-gray-500">Aucun avis pour cette recette.</p>
                 {% endfor %}
             </ul>
+            <form method="POST">
+                <button type="submit"
+                        class="w-full mt-4 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all">
+                    Voir analyse nutritionnelle
+                </button>
+            </form>
+
+            {% if nutritionAnalysis %}
+                <div class="mt-6 p-4 bg-gray-100 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-2">Analyse Nutritionnelle</h2>
+                    <p><strong>Calories :</strong> {{ nutritionAnalysis.calories }} kcal</p>
+                    <p><strong>Protéines :</strong> {{ nutritionAnalysis.proteines }} g</p>
+                    <p><strong>Lipides :</strong> {{ nutritionAnalysis.lipides }} g</p>
+                    <p><strong>Glucides :</strong> {{ nutritionAnalysis.glucides }} g</p>
+                    <p><strong>Fibres :</strong> {{ nutritionAnalysis.fibres }} g</p>
+                    <p class="mt-2 text-blue-700"><strong>Conseil :</strong> {{ nutritionAnalysis.conseil }}</p>
+                </div>
+            {% endif %}
+
+            {% if error %}
+                <p class="text-red-500 mt-4">{{ error }}</p>
+            {% endif %}
+
 
             <div class="mt-6">
                 <a href="{{ path('recipes_list') }}" 

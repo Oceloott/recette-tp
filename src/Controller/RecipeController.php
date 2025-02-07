@@ -17,23 +17,92 @@ use Symfony\Bundle\SecurityBundle\Security;
 
 class RecipeController extends AbstractController
 {
-    #[Route('/recipe/{id}', name: 'recipe_show')]
+    #[Route('/recipe/{id}', name: 'recipe_show', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_USER')]
-    public function show(Recipe $recipe): Response
+    public function show(Recipe $recipe, Request $request): Response
     {
+        $apiKey = $_ENV['OPENAI_API_KEY'] ?? null;
+        $nutritionAnalysis = null;
+        $error = null;
+
+        // Calcul de la note moyenne
         $reviews = $recipe->getReviews();
         $averageRating = null;
-
         if (count($reviews) > 0) {
             $total = array_reduce($reviews->toArray(), fn($carry, $review) => $carry + $review->getRating(), 0);
             $averageRating = $total / count($reviews);
         }
 
+        if ($request->isMethod('POST')) {
+            if (!$apiKey) {
+                throw new \RuntimeException('La clé API OpenAI est manquante.');
+            }
+
+            $ingredientsText = [];
+            foreach ($recipe->getIngredients() as $ingredient) {
+                $ingredientsText[] = "{$ingredient->getQuantity()} {$ingredient->getUnit()} de {$ingredient->getName()}";
+            }
+            $ingredientsList = implode(', ', $ingredientsText);
+
+            try {
+                $factory = new \OpenAI\Factory();
+                $client = $factory->withApiKey($apiKey)->make();
+                $response = $client->chat()->create([
+                    'model' => 'gpt-4-turbo',
+                    'messages' => [
+                        ['role' => 'system', 'content' => "Tu es un expert en nutrition et en diététique. 
+                        Lorsqu'on te donne une liste d'ingrédients d'une recette, tu dois analyser son apport nutritionnel.
+                        Fournis une analyse détaillée en JSON avec :
+                        - **calories** par portion
+                        - **protéines** (g)
+                        - **lipides** (g)
+                        - **glucides** (g)
+                        - **fibres** (g)
+                        - **conseils nutritionnels** (par ex. : équilibré, trop gras, riche en protéines).
+                        
+                        Réponds uniquement en JSON strictement formaté, sans texte explicatif autour."
+                        ],
+                        ['role' => 'user', 'content' => "Analyse les valeurs nutritionnelles de cette recette contenant : $ingredientsList.
+                        Retourne uniquement un JSON formaté comme ceci :
+                        ```json
+                        {
+                            \"calories\": 500,
+                            \"proteines\": 30,
+                            \"lipides\": 10,
+                            \"glucides\": 60,
+                            \"fibres\": 5,
+                            \"conseil\": \"Cette recette est riche en glucides et idéale pour un repas énergétique.\"
+                        }
+                        ```"
+                        ],
+                    ],
+                    'max_tokens' => 300,
+                    'temperature' => 0.5,
+                ]);
+
+                $jsonResponse = $response->choices[0]->message->content;
+                $jsonResponse = preg_replace('/```json|```/', '', $jsonResponse);
+                $jsonResponse = trim($jsonResponse);
+
+                $nutritionAnalysis = json_decode($jsonResponse, true);
+
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    throw new \Exception('Erreur JSON : ' . json_last_error_msg());
+                }
+            } catch (\Exception $e) {
+                $error = 'Erreur lors de l’analyse nutritionnelle : ' . $e->getMessage();
+            }
+        }
+
         return $this->render('recipes/recipe.html.twig', [
             'recipe' => $recipe,
             'averageRating' => $averageRating,
+            'nutritionAnalysis' => $nutritionAnalysis,
+            'error' => $error,
         ]);
     }
+
+
 
     #[Route('/recipes', name: 'recipes_list')]
     #[IsGranted('ROLE_USER')]
