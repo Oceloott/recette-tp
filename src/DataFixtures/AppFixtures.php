@@ -105,12 +105,22 @@ class AppFixtures extends Fixture
                 ->setCookTime($faker->numberBetween(5, 60))
                 ->setAuthor($faker->randomElement($users))
                 ->setImage($faker->randomElement($images));
-            foreach ($faker->randomElements($ingredients, mt_rand(3, 6)) as $ingredient) {
-                $recipe->addIngredient($ingredient);
-            }
+
             $manager->persist($recipe);
             $recipes[] = $recipe;
         }
+
+        $manager->flush();
+
+        foreach ($recipes as $recipe) {
+            $selectedIngredients = $faker->randomElements($ingredients, mt_rand(3, 6));
+            foreach ($selectedIngredients as $ingredient) {
+                $recipe->addIngredient($ingredient);
+                $ingredient->setRecipe($recipe);
+                $manager->persist($ingredient);
+            }
+        }
+
 
         foreach ($recipes as $recipe) {
             $numSteps = mt_rand(3, 5);
