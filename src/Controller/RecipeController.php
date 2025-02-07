@@ -59,10 +59,11 @@ class RecipeController extends AbstractController
     #[Route('/add/recipe', name: 'add_recipe')]
     #[IsGranted('ROLE_USER')]
     public function addRecipe(
-        Request $request,
+        Request                $request,
         EntityManagerInterface $entityManager,
-        Security $security
-    ): Response {
+        Security               $security
+    ): Response
+    {
         $recipe = new Recipe();
         $user = $security->getUser();
 
@@ -111,9 +112,64 @@ class RecipeController extends AbstractController
                     $client = $factory->withApiKey($apiKey)->make();
                     $response = $client->chat()->create([
                         'model' => 'gpt-3.5-turbo',
+
                         'messages' => [
-                            ['role' => 'system', 'content' => "Tu es un chef cuisinier passionné qui aide les amateurs à découvrir la cuisine. Tes recettes sont simples, savoureuses et accessibles à tous. Génére uniquement un JSON strictement formaté avec :\n\n- **Nom de la recette** basé sur les ingrédients fournis.\n- **Brève description** du plat.\n- **Temps de préparation et cuisson** en minutes.\n- **Liste des ingrédients** (uniquement ceux fournis) avec :\n  - `name`\n  - `quantity` (entier)\n  - `unit` (grammes, ml, pièce, etc.)\n- **Étapes numérotées** de préparation avec :\n  - `stepOrder` (entier)\n  - `description`\n- **Conseils et variantes**.\n\nNe génère que du JSON sans texte explicatif autour."],
-                            ['role' => 'user', 'content' => "Voici les ingrédients disponibles : **$ingredients**. Génére une recette en JSON formaté :\n\n1. `title` : Nom de la recette.\n2. `description` : Brève description.\n3. `prepTime` et `cookTime` en minutes.\n4. `ingredients` : Liste avec `name`, `quantity`, `unit`.\n5. `steps` : Liste numérotée avec `stepOrder` et `description`.\n6. `tips` : Conseils et variantes possibles.\n\nExemple attendu :\n```json\n{\n  \"title\": \"Crêpes moelleuses\",\n  \"description\": \"Des crêpes légères et faciles à faire.\",\n  \"prepTime\": 10,\n  \"cookTime\": 20,\n  \"ingredients\": [\n    {\"name\": \"Farine\", \"quantity\": 250, \"unit\": \"g\"},\n    {\"name\": \"Oeufs\", \"quantity\": 3, \"unit\": \"pièce\"},\n    {\"name\": \"Lait\", \"quantity\": 500, \"unit\": \"ml\"}\n  ],\n  \"steps\": [\n    {\"stepOrder\": 1, \"description\": \"Mélanger la farine et les œufs.\"},\n    {\"stepOrder\": 2, \"description\": \"Ajouter le lait progressivement en remuant.\"}\n  ]\n}\n```\n\nRéponds uniquement en JSON strictement formaté sans texte supplémentaire."]
+                            [
+                                'role' => 'system',
+                                'content' => "Tu es un chef cuisinier passionné qui aide les amateurs à découvrir la cuisine. 
+                                    Tes recettes sont simples, savoureuses et accessibles à tous. 
+                                    
+                                    Génére uniquement un JSON strictement formaté avec :
+                                    
+                                    - **Nom de la recette** basé sur les ingrédients fournis.
+                                    - **Brève description** du plat.
+                                    - **Temps de préparation et cuisson** en minutes.
+                                    - **Liste des ingrédients** (uniquement ceux fournis) avec :
+                                      - `name`
+                                      - `quantity` (entier)
+                                      - `unit` (grammes, ml, pièce, etc.)
+                                    - **Étapes numérotées** de préparation avec :
+                                      - `stepOrder` (entier)
+                                      - `description`
+                                    - **Conseils et variantes**.
+                                    
+                                    Ne génère que du JSON sans texte explicatif autour."
+                            ],
+                            [
+                                'role' => 'user',
+                                'content' => "Voici les ingrédients disponibles : **$ingredients**. 
+                                    
+                                    Génére une recette en JSON formaté :
+                                    
+                                    1. `title` : Nom de la recette.
+                                    2. `description` : Brève description.
+                                    3. `prepTime` et `cookTime` en minutes.
+                                    4. `ingredients` : Liste avec `name`, `quantity`, `unit`.
+                                    5. `steps` : Liste numérotée avec `stepOrder` et `description`.
+                                    6. `tips` : Conseils et variantes possibles.
+                                    
+                                    Exemple attendu :
+                                    
+                                    ```json
+                                    {
+                                      \"title\": \"Crêpes moelleuses\",
+                                      \"description\": \"Des crêpes légères et faciles à faire.\",
+                                      \"prepTime\": 10,
+                                      \"cookTime\": 20,
+                                      \"ingredients\": [
+                                        {\"name\": \"Farine\", \"quantity\": 250, \"unit\": \"g\"},
+                                        {\"name\": \"Oeufs\", \"quantity\": 3, \"unit\": \"pièce\"},
+                                        {\"name\": \"Lait\", \"quantity\": 500, \"unit\": \"ml\"}
+                                      ],
+                                      \"steps\": [
+                                        {\"stepOrder\": 1, \"description\": \"Mélanger la farine et les œufs.\"},
+                                        {\"stepOrder\": 2, \"description\": \"Ajouter le lait progressivement en remuant.\"}
+                                      ]
+                                    }
+                                    ```
+                                    
+                                    Réponds uniquement en JSON strictement formaté sans texte supplémentaire."
+                            ]
                         ],
                         'max_tokens' => 500,
                         'temperature' => 0.5,

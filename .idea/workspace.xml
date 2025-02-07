@@ -7,8 +7,6 @@
     <list default="true" id="659165ac-c7d0-4221-ba2d-723981219078" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/RecipeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/RecipeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Recipe.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Recipe.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/components/left_bar.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/components/left_bar.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/recipes/generate.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/recipes/generate.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -234,7 +232,10 @@
       <updated>1738571362996</updated>
       <workItem from="1738571364299" duration="667000" />
       <workItem from="1738572045422" duration="10460000" />
-      <workItem from="1738829740158" duration="9318000" />
+      <workItem from="1738829740158" duration="10908000" />
+      <workItem from="1738844001534" duration="1494000" />
+      <workItem from="1738851483390" duration="28000" />
+      <workItem from="1738925897710" duration="1622000" />
     </task>
     <servers />
   </component>
